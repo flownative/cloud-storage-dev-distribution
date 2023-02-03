@@ -1,0 +1,50 @@
+{
+    "name": "flownative/cloud-storage-dev-distribution",
+    "description": "Flownative Cloud Storage Dev Distribution",
+    "license": "MIT",
+    "config": {
+        "vendor-dir": "Packages/Libraries",
+        "bin-dir": "bin",
+        "allow-plugins": {
+            "neos/composer-plugin": true
+        },
+        "preferred-install": {
+            "flownative/aws-s3": "source",
+            "flownative/google-cloudstorage": "source",
+            "neos/flow-development-collection": "source"
+        }
+    },
+    "require": {
+        "neos/neos": "^8.0",
+        "neos/nodetypes": "^8.0",
+        "neos/neos-ui": "^8.0",
+        "neos/demo": "^8.0",
+        "flownative/google-cloudstorage": "dev-main",
+        "flownative/aws-s3": "dev-main",
+        "flownative/test-cloudstorage": "@dev"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "neos/kickstarter": "~8.2.0",
+        "neos/buildessentials": "~8.2.0",
+        "neos/behat": "~8.2.0",
+        "phpunit/phpunit": "~9.0",
+        "mikey179/vfsstream": "~1.6"
+    },
+    "repositories": {
+        "distributionPackages": {
+            "type": "path",
+            "url": "./DistributionPackages/*"
+        }
+    },
+    "suggest": {
+        "ext-pdo_sqlite": "For running functional tests out-of-the-box this is required",
+        "neos/fluid-adaptor": "For rendering templates with TYPO3.Fluid"
+    },
+    "scripts": {
+        "post-update-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-install-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-package-update": "Neos\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall",
+        "post-package-install": "Neos\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall"
+    }
+}

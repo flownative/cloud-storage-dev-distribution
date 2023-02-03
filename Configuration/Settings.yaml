@@ -1,0 +1,60 @@
+Neos:
+  Flow:
+    resource:
+      storages:
+        googlePersistentResourcesStorage:
+          storage: 'Flownative\Google\CloudStorage\GcsStorage'
+          storageOptions:
+            bucket: 'storage.instance-938fcb20-9050-43bd-b23a-51580cac2538.euw1.beach.flownative.cloud'
+#            bucket: '%env:BEACH_GOOGLE_CLOUD_STORAGE_STORAGE_BUCKET%'
+            keyPrefix: '/'
+        minioPersistentResourcesStorage:
+          storage: 'Flownative\Aws\S3\S3Storage'
+          storageOptions:
+            bucket: 'public'
+            keyPrefix: ''
+      collections:
+        persistent:
+          storage: 'minioPersistentResourcesStorage'
+          target: 'minioPersistentResourcesTarget'
+#          storage: 'googlePersistentResourcesStorage'
+#          target: 'googlePersistentResourcesTarget'
+      targets:
+        googlePersistentResourcesTarget:
+          target: 'Flownative\Google\CloudStorage\GcsTarget'
+          targetOptions:
+            bucket: 'storage.instance-938fcb20-9050-43bd-b23a-51580cac2538.euw1.beach.flownative.cloud'
+#            bucket: '%env:BEACH_GOOGLE_CLOUD_STORAGE_TARGET_BUCKET%'
+            keyPrefix: '/'
+            baseUri: '%env:BEACH_GOOGLE_CLOUD_STORAGE_TARGET_BASE_URI%'
+        minioPersistentResourcesTarget:
+          target: 'Flownative\Aws\S3\S3Target'
+          targetOptions:
+            bucket: 'public'
+            keyPrefix: ''
+            baseUri: '%env:BEACH_S3_STORAGE_TARGET_BASE_URI%'
+            persistentResourceUris:
+              pattern: '{baseUri}{sha1}/{filename}'
+
+Flownative:
+  Google:
+    CloudStorage:
+      profiles:
+        default:
+          credentials:
+            privateKeyJsonPathAndFilename: '%env:BEACH_GOOGLE_CLOUD_STORAGE_SERVICE_ACCOUNT_PATH_AND_FILENAME%'
+            privateKeyJsonBase64Encoded: '%env:BEACH_GOOGLE_CLOUD_STORAGE_SERVICE_ACCOUNT_ENCODED%'
+
+  Aws:
+    S3:
+      profiles:
+        default:
+          acl: 'public-read'
+          unpublishResources: true
+          signature_version: 'v4'
+          region: 'localbeach'
+          credentials:
+            key: '%env:MINIO_ROOT_USER%'
+            secret: '%env:MINIO_ROOT_PASSWORD%'
+          endpoint: 'http://minio:9000'
+          use_path_style_endpoint: true
